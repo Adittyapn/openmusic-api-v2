@@ -1,0 +1,38 @@
+{
+  "name": "openmusic-api",
+  "version": "1.0.0",
+  "description": "OpenMusic API for managing albums and songs",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "migrate": "node-pg-migrate",
+    "migrate:up": "node-pg-migrate up",
+    "migrate:down": "node-pg-migrate down",
+    "test:connection": "node test-connection.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "openmusic",
+    "api",
+    "music",
+    "albums",
+    "songs"
+  ],
+  "author": "TSC Team",
+  "license": "MIT",
+  "dependencies": {
+    "@hapi/hapi": "^21.3.2",
+    "@hapi/joi": "^17.1.1",
+    "dotenv": "^16.3.1",
+    "nanoid": "^3.3.6",
+    "pg": "^8.12.0"
+  },
+  "devDependencies": {
+    "eslint": "^9.29.0",
+    "eslint-config-dicodingacademy": "^0.9.4",
+    "node-pg-migrate": "^7.6.1",
+    "nodemon": "^3.0.1"
+  }
+}
