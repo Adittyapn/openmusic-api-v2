@@ -2,10 +2,7 @@ import {
   postCollaborationHandler,
   deleteCollaborationHandler,
 } from '../handlers/collaborations.js';
-import {
-  PostCollaborationPayloadSchema,
-  DeleteCollaborationPayloadSchema,
-} from '../validator/collaborations/schema.js';
+import { CollaborationPayloadSchema } from '../validator/collaborations/schema.js';
 
 const routes = [
   {
@@ -13,9 +10,9 @@ const routes = [
     path: '/collaborations',
     handler: postCollaborationHandler,
     options: {
-      auth: 'openmusic_jwt',
+      auth: 'musicapp_jwt',
       validate: {
-        payload: PostCollaborationPayloadSchema,
+        payload: CollaborationPayloadSchema,
         failAction: (request, h, error) => {
           const response = h.response({
             status: 'fail',
@@ -32,9 +29,9 @@ const routes = [
     path: '/collaborations',
     handler: deleteCollaborationHandler,
     options: {
-      auth: 'openmusic_jwt',
+      auth: 'musicapp_jwt',
       validate: {
-        payload: DeleteCollaborationPayloadSchema,
+        payload: CollaborationPayloadSchema,
         failAction: (request, h, error) => {
           const response = h.response({
             status: 'fail',

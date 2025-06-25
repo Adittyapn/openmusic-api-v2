@@ -8,9 +8,8 @@ import {
   getPlaylistActivitiesHandler,
 } from '../handlers/playlists.js';
 import {
-  PostPlaylistPayloadSchema,
-  PostSongToPlaylistPayloadSchema,
-  DeleteSongFromPlaylistPayloadSchema,
+  PlaylistPayloadSchema,
+  SongToPlaylistPayloadSchema,
 } from '../validator/playlists/schema.js';
 
 const routes = [
@@ -19,9 +18,9 @@ const routes = [
     path: '/playlists',
     handler: postPlaylistHandler,
     options: {
-      auth: 'openmusic_jwt',
+      auth: 'musicapp_jwt',
       validate: {
-        payload: PostPlaylistPayloadSchema,
+        payload: PlaylistPayloadSchema,
         failAction: (request, h, error) => {
           const response = h.response({
             status: 'fail',
@@ -38,7 +37,7 @@ const routes = [
     path: '/playlists',
     handler: getPlaylistsHandler,
     options: {
-      auth: 'openmusic_jwt',
+      auth: 'musicapp_jwt',
     },
   },
   {
@@ -46,7 +45,7 @@ const routes = [
     path: '/playlists/{id}',
     handler: deletePlaylistHandler,
     options: {
-      auth: 'openmusic_jwt',
+      auth: 'musicapp_jwt',
     },
   },
   {
@@ -54,9 +53,9 @@ const routes = [
     path: '/playlists/{id}/songs',
     handler: postSongToPlaylistHandler,
     options: {
-      auth: 'openmusic_jwt',
+      auth: 'musicapp_jwt',
       validate: {
-        payload: PostSongToPlaylistPayloadSchema,
+        payload: SongToPlaylistPayloadSchema,
         failAction: (request, h, error) => {
           const response = h.response({
             status: 'fail',
@@ -73,7 +72,7 @@ const routes = [
     path: '/playlists/{id}/songs',
     handler: getPlaylistSongsHandler,
     options: {
-      auth: 'openmusic_jwt',
+      auth: 'musicapp_jwt',
     },
   },
   {
@@ -81,9 +80,9 @@ const routes = [
     path: '/playlists/{id}/songs',
     handler: deleteSongFromPlaylistHandler,
     options: {
-      auth: 'openmusic_jwt',
+      auth: 'musicapp_jwt',
       validate: {
-        payload: DeleteSongFromPlaylistPayloadSchema,
+        payload: SongToPlaylistPayloadSchema,
         failAction: (request, h, error) => {
           const response = h.response({
             status: 'fail',
@@ -100,7 +99,7 @@ const routes = [
     path: '/playlists/{id}/activities',
     handler: getPlaylistActivitiesHandler,
     options: {
-      auth: 'openmusic_jwt',
+      auth: 'musicapp_jwt',
     },
   },
 ];

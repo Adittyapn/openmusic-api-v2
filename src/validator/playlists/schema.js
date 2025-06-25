@@ -1,19 +1,11 @@
 import Joi from '@hapi/joi';
 
-const PostPlaylistPayloadSchema = Joi.object({
+const PlaylistPayloadSchema = Joi.object({
   name: Joi.string().required(),
 });
 
-const PostSongToPlaylistPayloadSchema = Joi.object({
+const SongToPlaylistPayloadSchema = Joi.object({
   songId: Joi.string().required(),
 });
 
-const DeleteSongFromPlaylistPayloadSchema = Joi.object({
-  songId: Joi.string().required(),
-});
-
-export {
-  PostPlaylistPayloadSchema,
-  PostSongToPlaylistPayloadSchema,
-  DeleteSongFromPlaylistPayloadSchema,
-};
+export { PlaylistPayloadSchema, SongToPlaylistPayloadSchema };
