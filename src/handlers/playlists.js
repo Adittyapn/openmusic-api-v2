@@ -27,7 +27,7 @@ const postPlaylistHandler = async (request, h) => {
     return response;
   } catch (error) {
     const response = h.response({
-      status: 'error',
+      status: 'fail',
       message: error.message,
     });
     response.code(500);
@@ -48,7 +48,7 @@ const getPlaylistsHandler = async (request, h) => {
     };
   } catch (error) {
     const response = h.response({
-      status: 'error',
+      status: 'fail',
       message: error.message,
     });
     response.code(500);
@@ -111,6 +111,19 @@ const postSongToPlaylistHandler = async (request, h) => {
     response.code(201);
     return response;
   } catch (error) {
+    // Handle song not found error
+    if (
+      error.message.includes('Lagu tidak ditemukan') ||
+      error.message.includes('Song tidak ditemukan')
+    ) {
+      const response = h.response({
+        status: 'fail',
+        message: error.message,
+      });
+      response.code(404);
+      return response;
+    }
+
     if (error.message === 'Anda tidak berhak mengakses resource ini') {
       const response = h.response({
         status: 'fail',
@@ -135,6 +148,9 @@ const getPlaylistSongsHandler = async (request, h) => {
     const { userId } = request.auth.credentials;
 
     await playlistsService.verifyPlaylistAccess(id, userId);
+
+    await playlistsService.getPlaylistById(id);
+
     const playlist = await playlistsService.getPlaylistSongs(id);
 
     return {
@@ -149,7 +165,7 @@ const getPlaylistSongsHandler = async (request, h) => {
         status: 'fail',
         message: error.message,
       });
-      response.code(403);
+      response.code(404);
       return response;
     }
 

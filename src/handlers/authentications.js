@@ -1,3 +1,5 @@
+// authentications.js
+
 import AuthenticationsService from '../services/AuthenticationsService.js';
 import UsersService from '../services/UsersService.js';
 import TokenManager from '../tokenize/TokenManager.js';
@@ -27,6 +29,19 @@ const postAuthenticationHandler = async (request, h) => {
     response.code(201);
     return response;
   } catch (error) {
+    // Check if it's an authentication error (invalid credentials)
+    if (
+      error.message.includes('Kredensial yang Anda berikan salah') ||
+      error.message.includes('tidak ditemukan')
+    ) {
+      const response = h.response({
+        status: 'fail',
+        message: error.message,
+      });
+      response.code(401);
+      return response;
+    }
+
     const response = h.response({
       status: 'fail',
       message: error.message,

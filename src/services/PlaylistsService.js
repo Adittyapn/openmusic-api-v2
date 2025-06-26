@@ -19,6 +19,21 @@ class PlaylistsService {
     return result.rows[0].id;
   }
 
+  async getPlaylistById(id) {
+    const query = {
+      text: 'SELECT id, name, owner FROM playlists WHERE id = $1',
+      values: [id],
+    };
+
+    const result = await pool.query(query);
+
+    if (!result.rows.length) {
+      throw new NotFoundError('Playlist tidak ditemukan');
+    }
+
+    return result.rows[0];
+  }
+
   async getPlaylists(owner) {
     const query = {
       text: `SELECT p.id, p.name, u.username FROM playlists p 
@@ -84,10 +99,10 @@ class PlaylistsService {
       username: result.rows[0].username,
       songs: result.rows[0].song_id
         ? result.rows.map((row) => ({
-          id: row.song_id,
-          title: row.title,
-          performer: row.performer,
-        }))
+            id: row.song_id,
+            title: row.title,
+            performer: row.performer,
+          }))
         : [],
     };
 
