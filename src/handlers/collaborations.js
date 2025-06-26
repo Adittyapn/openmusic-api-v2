@@ -38,6 +38,15 @@ const postCollaborationHandler = async (request, h) => {
       return response;
     }
 
+    if (error.message.includes('tidak ditemukan')) {
+      const response = h.response({
+        status: 'fail',
+        message: error.message,
+      });
+      response.code(404);
+      return response;
+    }
+
     const response = h.response({
       status: 'fail',
       message: error.message,

@@ -144,14 +144,11 @@ const postSongToPlaylistHandler = async (request, h) => {
 
 const getPlaylistSongsHandler = async (request, h) => {
   try {
-    const { id } = request.params;
+    const { id: playlistId } = request.params;
     const { userId } = request.auth.credentials;
 
-    await playlistsService.verifyPlaylistAccess(id, userId);
-
-    await playlistsService.getPlaylistById(id);
-
-    const playlist = await playlistsService.getPlaylistSongs(id);
+    await playlistsService.verifyPlaylistAccess(playlistId, userId);
+    const playlist = await playlistsService.getPlaylistSongs(playlistId);
 
     return {
       status: 'success',
@@ -165,7 +162,7 @@ const getPlaylistSongsHandler = async (request, h) => {
         status: 'fail',
         message: error.message,
       });
-      response.code(404);
+      response.code(403);
       return response;
     }
 

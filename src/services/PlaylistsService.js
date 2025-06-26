@@ -142,17 +142,25 @@ class PlaylistsService {
   }
 
   async verifyPlaylistAccess(playlistId, userId) {
-    const query = {
-      text: `SELECT p.* FROM playlists p
-             LEFT JOIN collaborations c ON c.playlist_id = p.id
-             WHERE p.id = $1 AND (p.owner = $2 OR c.user_id = $2)`,
-      values: [playlistId, userId],
-    };
+    try {
+      await this.verifyPlaylistOwner(playlistId, userId);
+    } catch (error) {
+      if (error.message === 'Playlist tidak ditemukan') {
+        throw error;
+      }
 
-    const result = await pool.query(query);
-
-    if (!result.rows.length) {
-      throw new Error('Anda tidak berhak mengakses resource ini');
+      try {
+        const collaborationQuery = {
+          text: 'SELECT * FROM collaborations WHERE playlist_id = $1 AND user_id = $2',
+          values: [playlistId, userId],
+        };
+        const result = await pool.query(collaborationQuery);
+        if (!result.rows.length) {
+          throw new Error('Anda tidak berhak mengakses resource ini');
+        }
+      } catch (e) {
+        throw error;
+      }
     }
   }
 }
