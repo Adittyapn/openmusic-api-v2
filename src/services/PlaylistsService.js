@@ -54,9 +54,9 @@ class PlaylistsService {
       values: [id],
     };
 
-    const result = await pool.query(query);
+    const { rowCount } = await this._pool.query(query);
 
-    if (!result.rows.length) {
+    if (!rowCount) {
       throw new Error('Playlist gagal dihapus. Id tidak ditemukan');
     }
   }
@@ -99,10 +99,10 @@ class PlaylistsService {
       username: result.rows[0].username,
       songs: result.rows[0].song_id
         ? result.rows.map((row) => ({
-            id: row.song_id,
-            title: row.title,
-            performer: row.performer,
-          }))
+          id: row.song_id,
+          title: row.title,
+          performer: row.performer,
+        }))
         : [],
     };
 
